@@ -1,0 +1,6 @@
+
+opengrok_user: opengrok
+opengrok_pass: opengrok
+opengrok_group: build
+
+opengrok_ver: 0.12.1

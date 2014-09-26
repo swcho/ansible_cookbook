@@ -4,16 +4,10 @@
     - config.yml
   roles:
     - { role: debug, tags: ['debug'] }
-    - { role: hostname, server_name: "doroci-cis" }
+    - { role: hostname, server_name: "tms", tags: ['complementary']  }
     - { role: complementary, tags: ['complementary'] }
     - { role: java, tags: ['java'] }
     - { role: apache, tags: ['apache'] }
-    - { role: subversion_1.7_lock, tags: ['subversion_1.7_lock'] }
-    - { role: jenkins, tags: ['jenkins'] }
-    - { role: postgres, tags: ['postgres'] }
-    - { role: sonarqube, tags: ['sonarqube'] }
-    - { role: artifactory, tags: ['artifactory'] }
-    - { role: hdtk, tags: ['hdtk'], hdtk_user: 'devroot' }
-    - { role: cis-assets, tags: ['cis-assets'] }
+    - { role: subversion, tags: ['subversion'] }
 
 #    - { role: ossdb, tags: ['ossdb'] }

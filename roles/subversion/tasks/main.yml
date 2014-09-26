@@ -1,0 +1,14 @@
+
+- name: Install
+  apt: name={{ item }} state=present
+  with_items:
+    - subversion
+    - libsvn
+    - subversion-tools
+
+# subversion config
+- name: Configure Subversion
+  template: src=subversion.servers dest=/etc/subversion/servers
+
+- name: Configure Subversion save password
+  template: src=subversion.config dest=/etc/subversion/config

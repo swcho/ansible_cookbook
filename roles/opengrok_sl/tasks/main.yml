@@ -1,0 +1,32 @@
+
+- name: Install dependencies for OpenGrok for yum package manager
+  yum: name={{ item }} state=installed
+  with_items:
+  - tomcat
+  - ctags
+
+- name: Get OpenGrok
+  get_url: url=https://java.net/projects/opengrok/downloads/download/opengrok-{{ opengrok_ver }}.tar.gz dest=/tmp/opengrok-{{ opengrok_ver }}.tar.gz
+
+- name: Extract OpenGrok
+  command: tar -xvf /tmp/opengrok-{{ opengrok_ver }}.tar.gz -C /usr creates=/usr/opengrok-{{ opengrok_ver }}
+
+- name: Make symbolic link
+  command: ln -s -f /usr/opengrok-{{ opengrok_ver }} /usr/opengrok
+
+- name: Deploy OpenGrok
+  shell: CATALINA_HOME=/usr/share/tomcat OPENGROK_TOMCAT_BASE=/usr/share/tomcat OPENGROK_INSTANCE_BASE=/usr/opengrok /usr/opengrok/bin/OpenGrok deploy
+
+- name: Tomcat enable
+  command: chkconfig tomcat on
+
+- name: Make tomcat running on root user
+  lineinfile:
+     dest="/etc/tomcat/tomcat.conf"
+     state=present
+     create=yes
+     regexp="TOMCAT_USER"
+     line='TOMCAT_USER="root"'
+
+- name: Tomcat restart
+  command: /etc/init.d/tomcat restart

@@ -1,0 +1,54 @@
+
+- name: Install dependencies for OpenGrok for apt package manager
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - tomcat7
+  - exuberant-ctags
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install dependencies for OpenGrok for yum package manager
+  yum: name={{ item }} state=installed
+  with_items:
+  - tomcat
+  - ctags
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Get OpenGrok
+  get_url: url=https://java.net/projects/opengrok/downloads/download/opengrok-{{ opengrok_ver }}.tar.gz dest=/tmp/opengrok-{{ opengrok_ver }}.tar.gz
+
+- name: Extract OpenGrok
+  command: tar -xvf /tmp/opengrok-{{ opengrok_ver }}.tar.gz -C /usr creates=/usr/opengrok-{{ opengrok_ver }}
+
+- name: Make symbolic link
+  command: ln -s -f /usr/opengrok-{{ opengrok_ver }} /usr/opengrok
+
+# Set environment variables for SL distirbution
+- name: opengrok | set CATALINA_HOME for SL
+  lineinfile:
+     dest="/etc/bashrc"
+     state=present
+     create=yes
+     regexp="CATALINA_HOME"
+     line="export CATALINA_HOME=/usr/share/tomcat"
+  when: ansible_distribution == 'Scientific'
+
+- name: opengrok | set OPENGROK_TOMCAT_BASE for SL
+  lineinfile:
+     dest="/etc/bashrc"
+     state=present
+     create=yes
+     regexp="OPENGROK_TOMCAT_BASE"
+     line="export OPENGROK_TOMCAT_BASE=$CATALINA_HOME"
+  when: ansible_distribution == 'Scientific'
+
+- name: opengrok | set OPENGROK_INSTANCE_BASE for SL
+  lineinfile:
+     dest="/etc/bashrc"
+     state=present
+     create=yes
+     regexp="OPENGROK_INSTANCE_BASE"
+     line="export OPENGROK_INSTANCE_BASE=/usr/opengrok"
+  when: ansible_distribution == 'Scientific'
+
+- name: Deploy OpenGrok
+  command: ./OpenGrok deploy chdir=/usr/opengrok/bin

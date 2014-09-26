@@ -1,0 +1,42 @@
+---
+- name: artifactory | Install dependencies
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - unzip
+  tags: artifactory
+
+- name: Create artifactory user as {{artifactory_user}}
+  user: name={{artifactory_user}} createhome=yes group={{artifactory_group}} shell=/bin/bash state=present generate_ssh_key=yes groups="sudo"
+
+- name: artifactory | Ensure there is a done directory
+  file: path={{ artifactory_done_dir }} state=directory owner=root group=root
+  tags: artifactory
+
+- name: artifactory | Ensure download directory exists
+  sudo_user: '{{artifactory_user}}'
+  file: path={{ artifactory_zip_dir }} state=directory
+
+- name: artifactory | Download artifactory zip
+  sudo_user: '{{artifactory_user}}'
+  get_url: url={{ artifactory_zip_url }} dest={{ artifactory_zip_file_path }} mode=0640
+
+- name: artifactory | Extract artifactory
+  sudo_user: '{{artifactory_user}}'
+  shell: unzip {{ artifactory_zip_file_path }} -d {{ artifactory_dir }} creates={{ artifactory_version_dir }}
+
+- name: artifactory | Set artifactory config
+  sudo_user: '{{artifactory_user}}'
+  file: path=/etc/opt/jfrog/artifactory state=directory
+
+- name: artifactory | Set artifactory config
+  sudo_user: '{{artifactory_user}}'
+  template: src=root/etc/opt/jfrog/artifactory.j2 dest=/etc/opt/jfrog/artifactory/default
+
+- name: artifactory | Install artifactory service
+  shell: "{{ artifactory_version_dir }}/bin/installService.sh && touch {{ artifactory_done_dir }}/install-service creates={{ artifactory_done_dir }}/install-service"
+
+- name: artifactory | Start/Restart artifactory
+  service: name=artifactory state=started
+
+
+- include: apache_proxy.yml

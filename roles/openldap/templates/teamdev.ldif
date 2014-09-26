@@ -1,0 +1,67 @@
+version: 1
+
+dn: ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: TeamDev
+
+dn: uid=alan,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Alan Cox
+sn: Alan
+uid: alan
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+
+dn: uid=kentbeck,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Kent Beck
+sn: Kent
+uid: kentbeck
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+
+dn: uid=scott,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Scott Meyers
+sn: Scott
+uid: scott
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+
+dn: uid=richard,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Richard Stallman
+sn: Richard
+uid: richard
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+
+dn: uid=bs,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Bjarne Stroustrup
+sn: Bjarne
+uid: bs
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+
+dn: uid=linus,ou=TeamDev,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Linus Torvalds
+sn: Linus
+uid: linus
+userPassword:: e3NoYX1OV29aSzNrVHNFeFVWMDBZd28xRzVqbFVLS3M9
+

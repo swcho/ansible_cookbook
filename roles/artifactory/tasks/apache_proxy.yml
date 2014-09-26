@@ -1,0 +1,10 @@
+
+
+- name: Set apache2 proxy to be able to connect via http://localhost/jenkins
+  template: src=artifactory.conf dest=/etc/apache2/sites-available/artifactory.conf
+- shell: a2enmod proxy
+- shell: a2enmod proxy_http
+- shell: a2enmod rewrite
+- shell: a2ensite artifactory
+- name: restart apache2
+  action: service name=apache2 state=restarted

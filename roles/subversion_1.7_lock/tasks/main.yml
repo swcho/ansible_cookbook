@@ -1,0 +1,51 @@
+
+# ref: http://askubuntu.com/questions/453717/i-need-downgrade-from-subversion-1-8-to-subversion-1-7
+
+- name: Add saucy repository
+  lineinfile:
+    dest=/etc/apt/sources.list
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+  with_items:
+    - { regexp: 'TEMP1$',  line: 'deb http://extras.ubuntu.com/ubuntu saucy main # TEMP1' }
+    - { regexp: 'TEMP2$',  line: 'deb http://de.archive.ubuntu.com/ubuntu/ saucy main universe restricted multiverse # TEMP2' }
+
+- name: Remove previous version # sudo apt-get remove subversion libsvn1
+  apt: name={{ item }} state=absent
+  with_items:
+    - subversion
+    - libsvn1
+    - subversion-tools
+
+- name: Update adding saucy repository # apt-get update
+  apt: update_cache=yes
+
+- name: Install
+  apt: name={{ item }} state=present
+  with_items:
+    - subversion=1.7.9-1+nmu6ubuntu3
+    - libsvn1=1.7.9-1+nmu6ubuntu3
+    - subversion-tools=1.7.9-1+nmu6ubuntu3
+
+- name: Fix version of packages
+  command: echo {{ item }} hold | dpkg --set-selections
+  with_items:
+    - subversion
+    - libsvn1
+    - libserf1
+
+- name: Clear saucy repository
+  lineinfile:
+    dest=/etc/apt/sources.list
+    regexp="TEMP[\d]*$"
+    state=absent
+
+- name: Update adding saucy repository # apt-get update
+  apt: update_cache=yes
+
+# subversion config
+- name: Configure Subversion
+  template: src=subversion.servers dest=/etc/subversion/servers
+
+- name: Configure Subversion save password
+  template: src=subversion.config dest=/etc/subversion/config

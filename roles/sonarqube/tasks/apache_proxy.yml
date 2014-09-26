@@ -1,0 +1,9 @@
+
+- name: Set apache2 proxy to be able to connect via http://localhost/sonar
+  template: src=sonar.conf dest=/etc/apache2/sites-available/sonar.conf
+- shell: a2enmod proxy
+- shell: a2enmod proxy_http
+- shell: a2enmod rewrite
+- shell: a2ensite sonar
+- name: restart apache2
+  action: service name=apache2 state=restarted

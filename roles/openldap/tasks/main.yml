@@ -1,0 +1,89 @@
+# ref: https://github.com/jgrowl/ansible-playbook-ldap
+
+---
+
+- name: Make an ansible directory for remembering what we previously run
+  file: path={{ ldap_done_dir }} state=directory owner=root group=root
+  tags:
+    - ldap
+    - auth
+
+- name: Install LDAP packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - slapd
+    - ldap-utils
+    - ldapscripts
+  tags:
+    - ldap
+    - auth
+
+#- name: Have we configured slapd before?
+#  shell: "[ -f {{ ldap_slapd_dpkg_reconfigure_done }} ] && echo 'found' || echo ''"
+#  register: ldap_slapd_already_configured
+
+- name: Check slapd already configured
+  stat: path={{ ldap_slapd_dpkg_reconfigure_done }}
+  register: ldap_slapd_already_configured
+
+#- debug: var=ldap_slapd_already_configured
+
+- name: Reconfigure slapd
+  dpkg_reconfigure:
+    pkg: slapd
+    answers:
+      slapd/internal/generated_adminpw: password
+      slapd/password2: '{{ ldap_password }}'
+      slapd/password1: '{{ ldap_password }}'
+      slapd/allow_ldap_v2: false
+      shared/organization: '{{ ldap_host }}'
+      slapd/no_configuration: false
+      slapd/move_old_database: true
+      slapd/dump_database_destdir: /var/backups/slapd-VERSION
+      slapd/purge_database: false
+      slapd/domain: '{{ ldap_host }}'
+      slapd/backend: HDB
+      slapd/dump_database: when needed
+  when: not ldap_slapd_already_configured.stat.exists
+
+- name: Ugly hack to make sure the slapd reconfigure does not get run more than once
+  file: path={{ ldap_slapd_dpkg_reconfigure_done }} state=directory owner=root group=root
+  tags:
+    - ldap
+    - auth
+
+- include: load-schema.yml
+
+- name: Ensure ldapscripts.conf exists
+  template:
+    src: root/etc/ldapscripts/ldapscripts.conf.j2
+    dest: /etc/ldapscripts/ldapscripts.conf
+    owner: root
+    group: root
+  tags:
+    - ldap
+    - auth
+
+- name: ldap | Install add user template
+  template:
+    src: root/etc/ldapscripts/ldapadduser.template.j2
+    dest: /etc/ldapscripts/ldapadduser.template
+    owner: root
+    group: root
+  tags:
+    - ldap
+    - auth
+
+- name: ldap | ensure ldap.secret exists
+  template:
+    src: root/etc/ldap.secret.j2
+    dest: /etc/ldap.secret
+    owner: root
+    group: root
+    mode: 0400
+  tags:
+    - ldap
+    - auth
+
+- name: Restart slapd
+  shell: service slapd restart
