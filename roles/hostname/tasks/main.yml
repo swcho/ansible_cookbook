@@ -1,0 +1,21 @@
+- name: Set the hostname to {{ server_name }}
+  shell: echo "{{ server_name }}" > /etc/hostname
+  when: ansible_hostname != server_name
+  register: hostname_changed
+  
+- name: Apply current hostname permanetely
+  shell: hostname -F /etc/hostname # for Ubuntu
+  #shell: /etc/init.d/hostname.sh # for debian
+  when: hostname_changed|changed
+  
+- name: add the hostname to the hosts file
+  lineinfile: dest=/etc/hosts
+              regexp="^127.0.0.1    {{ server_name }}"
+              line="127.0.0.1    {{ server_name }}"
+              state=present
+
+#- name: configure default gateway
+#  lineinfile: dest=/etc/network/interfaces
+#              regexp="up route add default gw 10.0.2.2 eth0"
+#              line="up route add default gw 10.0.2.2 eth0"
+#              state=present
