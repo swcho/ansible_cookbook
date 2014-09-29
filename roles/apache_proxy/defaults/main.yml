@@ -1,0 +1,4 @@
+
+source_url: "http://localhost:8080/cb"
+service_name: "cb"
+target_prefix: "/{{service_name}}"
