@@ -17,6 +17,7 @@
     - tree
     - expect
     - zip
+    - git-core
 
 - name: config .vimrc
   copy: src=vimrc dest=/etc/vim/vimrc
@@ -27,15 +28,3 @@
 # Timezone setting
 - name: Set timezone to Seoul/Korea
   shell: ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-
-- name: Add doroci test servers to the hosts file
-  lineinfile: dest=/etc/hosts
-              regexp="doroci-test"
-              line="10.0.16.159    doroci-test"
-              state=present
-
-- name: Add doroci dev servers to the hosts file
-  lineinfile: dest=/etc/hosts
-              regexp="doroci-dev"
-              line="10.0.14.203    doroci-dev"
-              state=present

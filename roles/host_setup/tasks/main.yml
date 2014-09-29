@@ -1,0 +1,8 @@
+
+- name: Install vagrant
+  apt: pkg={{item}}
+  with_items: packages
+
+- name: Import vagrant boxes
+  shell: vagrant box add {{item.name}} {{item.url}}
+  with_items: vagrant_boxes

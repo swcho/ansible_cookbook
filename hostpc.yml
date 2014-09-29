@@ -1,0 +1,7 @@
+- hosts: alms
+  sudo: true
+  roles:
+    - { role: debug, tags: ['debug'] }
+    - { role: complementary, tags: ['complementary'] }
+    - { role: java, tags: ['java'] }
+    - { role: host_setup, tags: ['host_setup']}

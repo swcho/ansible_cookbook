@@ -1,0 +1,16 @@
+
+packages:
+  - "vagrant"
+  - "virtualbox"
+
+vagrant_boxes:
+  - name: '"Ubuntu precise 64 VirtualBox"'
+    url: "http://files.vagrantup.com/precise64.box"
+#  - name: "Ubuntu precise 32 VirtualBox"
+#    url: "http://files.vagrantup.com/precise32.box"
+#  - name: "Official Ubuntu 14.04 daily Cloud Image amd64"
+#    url: "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+#  - name: "Official Ubuntu 14.04 daily Cloud Image i386 "
+#    url: "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box"
+#  - name: "Ubuntu Server Trusty 14.04 amd64"
+#    url: "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vbox.box"
