@@ -1,4 +1,4 @@
-- hosts: alms
+- hosts: [ansible_host]
   sudo: true
   roles:
     - { role: debug, tags: ['debug'] }

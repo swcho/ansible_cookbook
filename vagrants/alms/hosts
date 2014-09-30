@@ -1,2 +1,2 @@
 [alms]
-192.168.1.5 ansible_ssh_port=22
+192.168.10.5 ansible_ssh_port=22
