@@ -1,0 +1,11 @@
+
+# ref https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server
+
+- name: First, you need to install the PPA in order to get access to its contents
+  shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+
+- name: Install packages
+  apt: pkg={{item}}
+  with_items:
+    - nodejs
+    - build-essential

@@ -4,4 +4,5 @@
     - { role: debug, tags: ['debug'] }
     - { role: complementary, tags: ['complementary'] }
     - { role: java, tags: ['java'] }
-    - { role: host_setup, tags: ['host_setup']}
+    - { role: host_setup, tags: ['host_setup'] }
+    - { role: nodejs, tags: ['nodejs'] }
