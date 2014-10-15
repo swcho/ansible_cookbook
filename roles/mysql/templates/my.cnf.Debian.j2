@@ -11,6 +11,12 @@ socket		= /var/run/mysqld/mysqld.sock
 nice		= 0
 
 [mysqld]
+character-set-server=utf8
+collation-server=utf8_general_ci
+init-connect='SET NAMES utf8'
+init_connect='SET collation_connection = utf8_general_ci'
+skip-character-set-client-handshake
+
 user		= mysql
 pid-file	= /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
@@ -24,8 +30,8 @@ skip-external-locking
 bind-address		= {{ mysql_bind_address }}
 
 key_buffer		= 16M
-max_allowed_packet	= 16M
-thread_stack		= 192K
+max_allowed_packet	= 128M
+thread_stack		= 256K
 thread_cache_size       = 8
 
 query_cache_limit	= 1M

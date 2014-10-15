@@ -1,3 +1,10 @@
 --
 
+- name: Make group
+  group: name={{cb_group}} state=present
+
 - name: Make user
+  user: name={{cb_user}} comment="codeBeamer user" group=cb_group groups=sudo,www-data generate_ssh_key=yes
+
+- name: copy pacakge
+  copy: src=CB-7.4.0-final-linux.bin dest=/home/{{cb_user}}

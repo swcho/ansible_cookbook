@@ -9,10 +9,11 @@
     - { role: java, tags: ['java'] }
     - { role: apache, tags: ['apache'] }
     - { role: subversion, tags: ['subversion'] }
-    - { role: apache_proxy,
-        source_url: "http://localhost:8080/cb/",
-        service_name: "cb",
-        target_prefix: "/",
-        tags: ['apache_proxy_cb'] }
+#    - { role: mysql, tags: ['mysql'] }
+#    - { role: apache_proxy,
+#        source_url: "http://localhost:8080/cb/",
+#        service_name: "cb",
+#        target_prefix: "/",
+#        tags: ['apache_proxy_cb'] }
 
 #    - { role: ossdb, tags: ['ossdb'] }
