@@ -1,10 +1,20 @@
---
 
 - name: Make group
   group: name={{cb_group}} state=present
 
 - name: Make user
-  user: name={{cb_user}} comment="codeBeamer user" group=cb_group groups=sudo,www-data generate_ssh_key=yes
+  user: name={{cb_user}} comment="codeBeamer user" group={{cb_group}} groups=sudo,www-data generate_ssh_key=yes createhome=yes shell=/bin/bash
 
 - name: copy pacakge
-  copy: src=CB-7.4.0-final-linux.bin dest=/home/{{cb_user}}
+  copy: src={{cb_install_package}} dest=/home/{{cb_user}}
+
+# TODO: Make install script
+
+- name: Make CB symbolic link
+  shell: ln -sf /home/{{cb_user}}/{{cb_version}} {{cb_install_home}}
+
+- name: Setup config
+  template: src=tomcat/webapps/cb/WEB-INF/classes/general.xml dest={{cb_install_home}}/tomcat/webapps/cb/WEB-INF/classes/general.xml
+
+- name: Start CB
+  shell: "{{cb_install_home}}/bin/restart"

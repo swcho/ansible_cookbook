@@ -1,0 +1,6 @@
+cb_user: codebeamer
+cb_pass: codebeamer
+cb_group: codebeamer
+cb_version: CB-7.4.0
+cb_install_package: "{{cb_version}}-final-linux.bin"
+cb_install_home: /home/{{cb_user}}/CB

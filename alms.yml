@@ -10,6 +10,7 @@
     - { role: apache, tags: ['apache'] }
     - { role: subversion, tags: ['subversion'] }
     - { role: mysql, tags: ['mysql'] }
+    - { role: cb, tags: ['cb'] }
 #    - { role: apache_proxy,
 #        source_url: "http://localhost:8080/cb/",
 #        service_name: "cb",

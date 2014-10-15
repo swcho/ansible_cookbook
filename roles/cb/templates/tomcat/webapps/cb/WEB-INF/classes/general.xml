@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- $Revision$ $Date$ -->
+<!--
+<!DOCTYPE cb PUBLIC "-//codebeamer.com//DTD Codebeamer Config 1.0//EN"
+	"http://codebeamer.com/dtd/codebeamer-config-1.0.dtd">
+-->
+<!DOCTYPE cb PUBLIC "-//codebeamer.com//DTD Codebeamer Config 1.0//EN"
+	"codebeamer-config-1.0.dtd">
+
+<cb>
+	<!-- Personalize the logo and welcome texts appearing on Codebeamer pages -->
+	<interactive recentHistoryItems="5" itemsPerPage="25" verboseErrorPage="true">
+		<registration-text format="W"></registration-text>
+		<slogan-text format="H"></slogan-text>
+		<welcome-text format="W"></welcome-text>
+		<login-text format="W"></login-text>
+		<!-- <logo width="0" height="0" /> -->
+	</interactive>
+
+	<!--
+	office edit servlet configuration
+		enabled: if true office edit feature is enabled, otherwise it is disabled 
+	 -->
+	<officeedit enabled="false"/>
+
+	<!-- Switch on/off displaying Forum on Project Admin page -->
+	<showForum enabled="false" />
+
+	<!-- Database connection properties -->
+<!--
+	<database
+		JDBC_Driver="org.apache.derby.jdbc.ClientDriver"
+		JDBC_ConnectionURL="jdbc:derby://localhost:57001/codebeamer"
+		JDBC_Username="cbroot"
+		JDBC_Password="cbpassword"
+	/>
+-->
+
+	<database
+		JDBC_Driver="com.mysql.jdbc.Driver"
+		JDBC_ConnectionURL="jdbc:mysql://localhost:3306/codebeamer?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;emulateLocators=true&amp;characterEncoding=UTF-8"
+		JDBC_Username="cbroot"
+		JDBC_Password="cbpassword"
+	/>
+
+<!-- Comment out to use Oracle
+	<database
+		JDBC_Driver="oracle.jdbc.driver.OracleDriver"
+		JDBC_ConnectionURL="jdbc:oracle:thin:@//127.0.0.1:1521/ORCL"
+		JDBC_Username="cbroot"
+		JDBC_Password="cbpassword"
+	>
+		<props>
+			<prop key="defaultRowPrefetch">25</prop>
+		</props>
+	</database>
+-->
+
+<!-- Comment out to use a DataSource defined in the Containers JNDI tree
+	<database
+		JDBC_Driver="javax.sql.DataSource"
+		JDBC_ConnectionURL="jndi:codeBeamerDataSource"
+		JDBC_Username=""
+		JDBC_Password=""
+	/>
+-->
+
+	<!--
+		The values below configre whether and when the nightly builds
+		(including statistic) should run.
+	-->
+	<background hour="1" minute="5" period="86400" inboxPolling="900" />
+
+	<!-- Set accountLink="${firstName} ${lastName}" to display real names instead of account names. -->
+	<!-- To install a special policy to assure the quality of entered passwords, assign a regular expression
+		to the attribute 'passwordPolicy':
+		For example: To require passwords to be at least 6 chars long and to contain at
+		least one lower case letter, one upper case letter, one digit and one special character @#$%^&+=
+		passwordPolicy="^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=]).*$"
+	-->
+	<!-- Captcha of registration can be enabled/disabled by using the property captchaEnabled -->
+	<login permission="" logoffURL="/login.spr" registration="" showDenyCause="true"
+		accountLink="" newAccountRole="user" anonymous="" gravatars="false"
+		cookiesAllowed="true" forgetCookies="true" displayLastActivityDate="true" sendLostPasswordPerMail="true"
+		phoneMandatory="false" companyMandatory="false" postalAddressMandatory="false" passwordPolicy=""
+		log-expiration="30" captchaEnabled="false" >
+		<single-signon user-id-header="x-user-global-id">
+			<map>
+				<header>x-mail</header>
+				<property>email</property>
+			</map>
+			<map>
+				<header>x-sn</header>
+				<property>lastName</property>
+			</map>
+			<map>
+				<header>x-givenname</header>
+				<property>firstName</property>
+			</map>
+			<map>
+				<header>x-telephoneNumber</header>
+				<property>phone</property>
+			</map>
+			<map>
+				<header>x-company</header>
+				<property>company</property>
+			</map>
+			<map>
+				<header>x-l</header>
+				<property>city</property>
+			</map>
+			<map>
+				<header>x-postalAddress</header>
+				<property>address</property>
+			</map>
+		</single-signon>
+		<!-- an example configuration for logging in with facebook
+		<social-provider enabled="true" provider="facebook" clientId="246888845342947" clientSecret="1c8004bc36497cee676498ef2d361532" />
+		-->
+
+	</login>
+
+	<!-- Document/Directory custom attribute definitions in display order.
+	  	object  - can be "1" (Document), "2" (Directory) or "6" (Wikipage). Default is "1"
+	  	key 	- key/name of the attribute. Must be unique per object
+	  	type	- type of the attribute. One of "string", "text", "int[eger]", "decimal", "float", "double", "bool[ean]", "date[time]". Default is "text"
+	-->
+	<metadatas>
+		<!--
+		<metadata object="1" key="sapDocNo"  displayName="SAP Document Number"  type="text" />
+		<metadata object="1" key="sapDocRev" displayName="SAP Document Version" type="int" />
+		-->
+	</metadatas>
+
+
+	<!-- Rules how field values should be aggregated up/distributed down the issue/item hierarchy. -->
+	<!-- Never change the id of existing rules, but you can add new custom rules or replace standard rules with custom ones -->
+	<hierarchy>
+		<!-- These are the standard rules:
+		<rule id="1"  name="Minimum"			desc="Set parent value to smallest child value"			class="com.intland.codebeamer.manager.hierarchy.MinimumRule"/>
+		<rule id="2"  name="Maximum"			desc="Set parent value to largest child value"			class="com.intland.codebeamer.manager.hierarchy.MaximumRule"/>
+		<rule id="3"  name="Sum/Total"			desc="Set parent value to sum/total of child values"	class="com.intland.codebeamer.manager.hierarchy.SummationRule"/>
+		<rule id="4"  name="Average"			desc="Set parent value to average of child values"		class="com.intland.codebeamer.manager.hierarchy.AverageRule"/>
+		<rule id="5"  name="Union"				desc="Set parent value to the union of child values"	class="com.intland.codebeamer.manager.hierarchy.UnionRule"/>
+		<rule id="6"  name="Intersection"		desc="Set parent value to the intersection of child values"	 class="com.intland.codebeamer.manager.hierarchy.IntersectionRule"/>
+		<rule id="7"  name="Set"				desc="Set child value to parent value"					class="com.intland.codebeamer.manager.hierarchy.DistributionRule"/>
+		<rule id="8"  name="Default"			desc="Use parent value as default child value"			class="com.intland.codebeamer.manager.hierarchy.DefaultRule"/>
+		<rule id="9"  name="Least"				desc="Set child value to least of parent/child value"	class="com.intland.codebeamer.manager.hierarchy.LeastRule"/>
+		<rule id="10" name="Greatest"			desc="Set child value to greatest of parent/child value" class="com.intland.codebeamer.manager.hierarchy.GreatestRule"/>
+		<rule id="11" name="Fraction"			desc="Set child value to fraction of parent value"		class="com.intland.codebeamer.manager.hierarchy.FractionRule"/>
+		<rule id="12" name="Subset"				desc="Retain only child values that are also parent values"		class="com.intland.codebeamer.manager.hierarchy.RetainRule"/>
+		<rule id="13" name="Superset"			desc="Add missing parent values to child values"		class="com.intland.codebeamer.manager.hierarchy.MergeRule"/>
+
+		<rule id="14" name="Mean status"		desc="Set parent status to mean children status"		class="com.intland.codebeamer.manager.hierarchy.MeanStatusRule"/>
+		<rule id="15" name="Close recursively" 	desc="On parent close, close children recursively" 		class="com.intland.codebeamer.manager.hierarchy.CloseChildrenOnParentCloseRule"/>
+		<rule id="16" name="Close restricted"	desc="On parent close, all children must be closed" 	class="com.intland.codebeamer.manager.hierarchy.CloseOnlyIfAllChildrenClosedRule"/>
+		<rule id="17" name="Close upwards"	  	desc="Close parent after closing last child" 			class="com.intland.codebeamer.manager.hierarchy.CloseParentAfterLastChildCloseRule"/>
+		-->
+	</hierarchy>
+
+	<scc text-encoding="Cp1252" htaccess="true" scm-change-set-text-editable="true">
+<!--
+		<cvs character-encoding="ISO-8859-1" />
+-->
+
+		<!--
+			If "export_passwords" is "true" CodeBeamer passwords will be stored into
+			../REPOSITORY/conf/passwd files in PLAIN format. This is necessary for "svnserve" authentication.
+			It is strongly recommended that you set this "export_passwords" to "false" if you access
+			subversion only via apache (such as http://...).
+		-->
+		<svn export_passwords="true" password_chmod="0600" add_bugtraq="false">
+			<!--
+				If "start" is "true" "svnserve" will be started during CodeBeamer startup.
+				If "start" and "stop" are "true" "svnserve" will be stopped during CodeBeamer shutdown.
+			-->
+			<svnserve start="true" stop="true" port="3690">
+<!--
+				<env key="LANG" value="en_US" />
+-->
+			</svnserve>
+		</svn>
+
+		<!-- The Mercurial hgserve is quite useless, because it only allows read operations, but perhaps you may find it useful -->
+		<hg mr-pull-url="" mr-push-url="" webconf="">
+			<hgserve start="false" stop="true" port="8000" />
+		</hg>
+
+		<!-- The GIT daeamon, is quite useless, because it only allows read operations, but perhaps you may find it useful -->
+		<git mr-pull-url="" mr-push-url="">
+			<daemon start="false" stop="true" port="9418" />
+		</git>
+	</scc>
+
+	<!--
+		This is the default date and time formatting. Every user can configure
+		his own format, thus you should NOT modify this value here.
+	-->
+	<date datetime="MMM dd HH:mm yyyy" date="MMM dd yyyy" />
+
+	<!-- The name of the outgoing SMTP server. -->
+    <mail host="my-mail-server" localname="" serverPort="8080">
+		<props>
+			<prop key="mail.smtp.connectiontimeout">3000</prop>
+			<prop key="mail.smtp.timeout">5000</prop>
+			<!-- The setting below might help if you have problems with Microsoft Exchange:
+				http://www.oracle.com/technetwork/java/faq-135477.html
+			<prop key="mail.pop3.disabletop">true</prop>
+			<prop key="mail.pop3.forgettopheaders">true</prop>
+			-->
+		</props>
+	</mail>
+
+	<!--
+		display-plain-text-as-html:
+			Internet-Explore might ignore content-type "text/plain" thus it can be useful to display text file as html.
+		storage-path:
+			The absolult path where to store the documents. Default is: /install_dir/repository
+			(/docs) will be appended. "rwx" access and file locking are necessary.
+		relocatable:
+			When turned on, this is possible to store documents outside the default	storage path.
+		access-log
+			Whether to maintain a document (read) access log (true) or not (false).
+		log-expiration
+			Entries older than this number of days will be purged from the document access log, or 0 to keep log entries forever.
+		auto_restore_from_trash
+			If set, removed documents will be automatically re-used/restored, if the same user creates a new similar document within this period of time, e.g. "30s".
+	-->
+	<document display-plain-text-as-html="false" storage-path="" relocatable="false" access-log="true" log-expiration="0" auto_restore_from_trash="30s"/>
+
+	<search delay="90" period="3600" incremental-indexing="true" max-indexing-size="standard" pattern-sufix="*">
+		<!--
+			For Asian languages it might be useful to add the tag below.
+			<analyzer>org.apache.lucene.analysis.SimpleAnalyzer</analyzer>
+		-->
+		<!--
+			The convenient search analyzer which indexes a text as
+			whitespace-delimited tokens.
+			<analyzer>org.apache.lucene.analysis.WhitespaceAnalyzer</analyzer>
+		-->
+	</search>
+
+	<!--
+	defaultMode attribute defines the default wiki editing mode.
+	Possible values: wysiwyg, markup.
+	Default is "markup"
+
+	jsCompressingMode attribute defines the default JavaScript output.
+	Possible values: none, withoutCache, full.
+	Default is "full"
+	-->
+	<wiki defaultMode="wysiwyg" jsCompressingMode="none">
+		<styles>
+			<style name="commentbox">
+				float: right; width: 20%; border: 2px solid #E5E5E5; background: #F5F5F5; font-size: 7pt; padding: 4px; margin-left: 4px;
+			</style>
+			<style name="blue">
+				color: blue;
+			</style>
+			<style name="cyan">
+				color: cyan;
+			</style>
+			<style name="gray">
+				color: gray;
+			</style>
+			<style name="green">
+				color: green;
+			</style>
+			<style name="magenta">
+				color: magenta;
+			</style>
+			<style name="orange">
+				color: orange;
+			</style>
+			<style name="pink">
+				color: pink;
+			</style>
+			<style name="red">
+				color: red;
+			</style>
+			<style name="yellow">
+				color: yellow;
+			</style>
+		</styles>
+
+		<!-- interwiki link rendering -->
+		<interwiki>
+			<proj>
+				<link>${name}</link>
+				<popup>${interwikiLink} ${category}; Created: ${created}</popup>
+			</proj>
+			<doc>
+				<link>${path}</link>
+				<popup>${interwikiLink} Status: ${status}; Last Modified: ${modified}; Locked: ${locked}</popup>
+			</doc>
+			<wikipage>
+				<link>${name}</link>
+				<popup>${interwikiLink} Status: ${status}; Last Modified: ${modified}; Locked: ${locked}</popup>
+			</wikipage>
+			<category>
+				<link>${name}</link>
+				<popup>${interwikiLink} Key: ${key}; Type: ${type}; Created: ${created}</popup>
+			</category>
+			<item>
+				<link>${summary}</link>
+				<popup>${interwikiLink} Status: ${status}; Description: ${description}</popup>
+			</item>
+<!--
+			<requirement>
+				<link>${name} - Status: ${status}; Priority: ${priority}</link>
+				<popup>${interwikiLink} Tracker Key: ${tracker.key}; Status: ${status}; Last Modified: ${modified}; Priority: ${priority}</popup>
+			</requirement>
+-->
+			<tracker>
+				<link>${name}</link>
+				<popup>${interwikiLink} Key: ${key}; Type: ${type}; Created: ${created}</popup>
+			</tracker>
+			<issue>
+				<link>${summary}</link>
+				<popup>${interwikiLink} Tracker Key: ${tracker.key}; Status: ${status}; Last Modified: ${modified}; Priority: ${priority}</popup>
+			</issue>
+			<infosheet>
+				<link></link>
+				<popup></popup>
+				<body>columns=3, value.style=min-width: 18em, categories, namedPriority, severities, status, versions, subjects, platforms, description</body>
+			</infosheet>
+			<description>
+				<link></link>
+				<popup></popup>
+				<body>description</body>
+			</description>
+			<repository>
+				<link>${name}</link>
+				<popup>${interwikiLink} Type: ${type}; Project: ${project.name}; Description: ${description}</popup>
+			</repository>
+			<changeset>
+				<link>${name}</link>
+				<popup>${interwikiLink} ${submitted}: ${description}</popup>
+			</changeset>
+			<push>
+				<link>${name}</link>
+				<popup>${interwikiLink} ${submitted}; Target: ${project.name} - ${repository.name}</popup>
+			</push>
+			<src>
+				<link>${name}</link>
+				<popup>${interwikiLink} ${path} (${length} bytes)</popup>
+			</src>
+			<forum>
+				<link>${name}</link>
+				<popup>${interwikiLink} Key: ${key}; Created: ${created}</popup>
+			</forum>
+			<ftc>
+				<link>${subject}</link>
+				<popup>${interwikiLink} Submitted: ${submitted}</popup>
+			</ftc>
+			<build>
+				<link>${name}</link>
+				<popup>${interwikiLink} Build File: ${buildFileName}</popup>
+			</build>
+			<buildlog>
+				<link>${name}</link>
+				<popup>${interwikiLink} Created: ${created}</popup>
+			</buildlog>
+			<user>
+				<link>${name}</link>
+				<popup>${interwikiLink} ${firstName} ${lastName} (${email}); Last Login: ${lastLogin}</popup>
+			</user>
+		</interwiki>
+	</wiki>
+
+	<parsers showFileNames="false" />
+
+	<file>
+		<group type="c" description="C/C++"
+			extensions="c,h,cc,cp,cpp,cxx,hh,hpp,hxx,ec,pc,sqc"
+			parser="%d%/cparser" />
+
+		<group type="j" description="Java" extensions="java"
+			parser="%d%/jparser" />
+
+		<group type="r" description="C#" extensions="cs,c#,csharp" parser="-" />
+
+		<group type="f" description="Fortran" extensions="f95,f90,for,f77" parser="-" />
+
+		<group type="p" description="JSP" extensions="jsp" parser="-" />
+
+		<group type="w" description="Web" extensions="asp,aspx,phtml,shtml,php" parser="-" />
+
+		<group type="x" description="XML" extensions="xml,tld" parser="-" />
+
+		<group type="t" description="JavaScript" extensions="js" parser="-" />
+
+		<group type="m" description="Make" extensions="makefile,mak,mk" parser="-" />
+
+		<group type="h" description="Html" extensions="html,htm,css" parser="-" />
+
+		<group type="s" description="Sql" extensions="sql" parser="-" />
+
+		<group type="o" description="Other"
+			extensions="idl,csh,sh,tcl,tex,pl,y,l,ksh,bat,readme,changelog,txt"
+			parser="-" />
+
+		<group type="*" description="Image"
+			extensions="ai,nc,cdf,cer,mif,ief,tiff,tif,pbm,pgm,ppm,ppt,rgb,xpm,xwd,au,snd,aif,aifc,wav,mpeg,mpg,mpe,qt,mov,avi,movie,avx,wrl,mpv2,jnlp,eps,ps,pdf,rtx,tsv,etx,texi,dvi,hdf,latex,roff,man,doc,xls,rtf,ppt,pps,vsd,sdc,sdw,gif,jpg,jpe,jpeg,png,ico,xbm,zip,jar,rar" parser="-" />
+	</file>
+
+	<!--
+		Configuration for Ant builds
+
+		jvmArgs: Java Virtual Machine arguments to pass for Ant
+	-->
+	<ant jvmArgs="-Xms192m -Xmx512m" />
+
+	<!-- Single CodeBeamer server license -->
+	<!-- License bundle for multiple (clustered) CodeBeamer servers using the same/shared installation -->
+<!--
+	<licenses>
+		<license hostid="WIN-29-26-ED-D4" code="34932A47089C0922" expire="Dec-31-2008" />
+		<license hostid="WIN-1D-48-29-CE" code="2D412757B4846E21" expire="Dec-31-2008" />
+	</licenses>
+-->
+
+	<cryptography key="C1-9B-F8-79-EA-45-63-F1"/>
+
+	<!--
+		Configuration for LDAP authentication
+
+		The <server> section defines the connection to the LDAP server.
+
+			- You must provide a valid server hostname/ip-address and port in the "url" attribute, e.g.:
+				<server url="ldaps://ldap.intland.com:389" ... />
+
+			- To specify multiple (alternative) servers, use the "urls" attribute and separate servers with commas, e.g.:
+				<server urls="ldaps://ldap.intland.com:389, ldaps://ldap.javaforge.com:389" ... />
+
+			- If anonymous access is allowed, you must set attribute "anonymousReadOnly" to "true" and can ommit the attributes "userDn" and "password". E.g.:
+				<server url="..." anonymousReadOnly="true" ... />
+
+			- If anonymous access is not possible, you must provide the full distinguished name of an LDAP user to login (userDn) plus the password. E.g.:
+				<server url="..." userDn="cn=Manager,dc=intland,dc=com" password="topsecret" ... />
+
+			- You can define custom timeouts (in milliseconds) for establishing connections to the LDAP server (default 10s) and waiting for responses (default 30s), e.g.
+				<server url="..." connectTimeout="10000" readTimeout="30000" ... />
+
+			- If codebeamer users are all stored in a single sub-domain of the directory, you can specify the base domain also, e.g.:
+				<server url="..." base="dc=intland,dc=com" ... />
+
+			- For an Active-Directory server, you must also set: referral="follow"
+				<server url="..." referral="follow" />
+
+
+		The <mapping> section defines the mapping from LDAP user attributes to codeBeamer account properties:
+
+			- For Active-Directory, the user/account name will be typically stored in attribute "sAMAccountName", e.g.:
+				<mapping name="sAMAccountName" ... />
+
+			- For other LDAP servers, the user/account name could be stored in "uid", e.g.:
+				<mapping name="uid" ... />
+
+			Please map the other attributes accordingly. If an attribute is not available, map it to empty, e.g.: title="".
+
+			- The mailSuffix is special, because this is a constant, that will be appended to the fetched email value, e.g.:
+				<mapping name="uid" ... mailSuffix="@intland.com" ... />
+
+
+		The <realm> section configures user authentication against the LDAP server.
+
+			- To enable user authentication against the LDAP server, you must enable the LDAP realm:
+				<realm enabled="true" ... />
+
+			- To enable mixed authentication, first against the LDAP server, next (if necessary) against the CodeBeamer database, enable the "fallback" option:
+				<realm enabled="true" fallback="true" ... />
+
+			Fallback mode also allows to authenticate internal accounts not known to the LDAP server at all.
+
+			- After each successful authentication against the LDAP server, LDAP account information will be synchronized with CodeBeamer account information,
+			according to the defined <mapping>. Via the optional "storePassword" attribute, you can define, whether the LDAP password should also be stored in
+			CodeBeamer, or not:
+				<realm enabled="true" ... storePassword="false" ... />
+
+			- To authenticate an LDAP user, you must either specify the user's unique Distinguished Name (DN) pattern, where {0} will be replaced by the login name of the user, e.g.:
+				<realm ... userPattern="uid={0},ou=people,dc=intland,dc=com" ... />
+
+			or you have to specify search criteria to find a  single user in a specific directory branch, e.g. to search for a user with 'sAMAccountName={0}' in
+			the branch 'ou=people,dc=intland,dc=com' of an Active Directory recursivley, use:
+				<realm ... userSearch="sAMAccountName={0}" userBase="ou=people" userSubtree="true" ... />
+
+			Note: the <realm userBase=...> is relative to <server base=...> (if any)
+
+			If the <realm> section is not present, or <realm enabled="false" ...> all user authentication will be done against the codeBeamer database.
+
+
+		The optional <cache> section configures LDAP authentication caching:
+
+			- To enable the authentication cache:
+				<cache enabled="true" ... />
+
+			- You can also specify, how long CodeBeamer remembers successful and failed authentications (in milliseconds):
+				<cache enabled="true" successTTL="300000" failureTTL="60000"/>
+
+			If the <cache> section is not present, or <cache enabled="false" ...> no authentication caching will occur.
+	-->
+	<LDAP>
+		<server url="ldap://your-ldap-server:389" anonymousReadOnly="false" userDn="" password="" base="" referral="follow" />
+
+		<mapping name="sAMAccountName" password="" status=""
+				title="" firstName="givenName" lastName="sn" company="company"
+				address="streetAddress" zip="postalCode" city="L" state="st" country="c" timeZonePattern="tz"
+				email="mail" mailSuffix="" phone="telephoneNumber" mobile="mobile" />
+
+		<realm enabled="false" fallback="true" storePassword="true" userPattern="" userSearch="sAMAccountName={0}" userBase="" userSubtree="true" />
+
+		<cache enabled="true" successTTL="300000" failureTTL="60000"/>
+	</LDAP>
+
+	<!-- Computer Telephony Integration configuration
+	# Is the CTI module enabled ?
+	enabled="{true|false}"
+
+	# What tracker should be used as default for new issues
+	defaultTrackerId="<Tracker-ID>"
+
+	# What Country should be used as default for telephone numbers without ICC code
+	country="<ISO 3166-1 2-letter country code>"
+	-->
+	<CTI enabled="false" defaultTrackerId="0" country="DE"/>
+
+	<!--
+	# The maximum number of report rows that can be exported as PDF
+	# The technical limit for Excel is 32767
+	# The only not restricted export is the export as CSV
+	-->
+	<reports export="5000"/>
+
+	<!-- Uncomment to add IPFilters, and to make the IPFilters appear on the system administration page.
+		<IPFilters>
+		</IPFilters>
+	-->
+
+</cb>
