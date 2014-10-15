@@ -9,7 +9,7 @@
     - { role: java, tags: ['java'] }
     - { role: apache, tags: ['apache'] }
     - { role: subversion, tags: ['subversion'] }
-#    - { role: mysql, tags: ['mysql'] }
+    - { role: mysql, tags: ['mysql'] }
 #    - { role: apache_proxy,
 #        source_url: "http://localhost:8080/cb/",
 #        service_name: "cb",

@@ -51,7 +51,7 @@
   mysql_db: name=test state=absent
 
 - name: Create the database's
-  mysql_db: name={{ item.name }} state=present
+  mysql_db: name={{ item.name }} state=present encoding=utf8 collation=utf8_general_ci
   with_items: mysql_db
   when: mysql_db|lower() != 'none'
 

@@ -17,6 +17,8 @@ init-connect='SET NAMES utf8'
 init_connect='SET collation_connection = utf8_general_ci'
 skip-character-set-client-handshake
 
+binlog_format = row
+
 user		= mysql
 pid-file	= /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
