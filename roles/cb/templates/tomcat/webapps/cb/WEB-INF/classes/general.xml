@@ -39,8 +39,8 @@
 	<database
 		JDBC_Driver="com.mysql.jdbc.Driver"
 		JDBC_ConnectionURL="jdbc:mysql://localhost:3306/codebeamer?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;emulateLocators=true&amp;characterEncoding=UTF-8"
-		JDBC_Username="cbroot"
-		JDBC_Password="cbpassword"
+		JDBC_Username="{{db_user}}"
+		JDBC_Password="{{db_pass}}"
 	/>
 
 <!-- Comment out to use Oracle

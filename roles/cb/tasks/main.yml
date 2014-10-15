@@ -16,5 +16,12 @@
 - name: Setup config
   template: src=tomcat/webapps/cb/WEB-INF/classes/general.xml dest={{cb_install_home}}/tomcat/webapps/cb/WEB-INF/classes/general.xml
 
-- name: Start CB
-  shell: "{{cb_install_home}}/bin/restart"
+- name: Setup SQL
+  template: src=setup_cb.sql dest={{cb_install_home}}
+
+- name: Setup DB
+  shell: mysql -u "root" "-pfoobar" < {{cb_install_home}}/setup_cb.sql
+
+#- name: Start CB
+#  shell: "{{cb_install_home}}/bin/restart"
+

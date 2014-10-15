@@ -1,5 +1,7 @@
 cb_user: codebeamer
 cb_pass: codebeamer
+db_user: cbroot
+db_pass: cbpass
 cb_group: codebeamer
 cb_version: CB-7.4.0
 cb_install_package: "{{cb_version}}-final-linux.bin"
