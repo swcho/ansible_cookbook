@@ -1,2 +1,3 @@
 #!/bin/sh
-ssh-copy-id -i ~/.ssh/id_dsa.pub [hosts]
+ssh-keygen -t rsa -C "sungwoo.cho.dev@gmail.com"
+ssh-copy-id -i ~/.ssh/id_rsa.pub [hosts]
